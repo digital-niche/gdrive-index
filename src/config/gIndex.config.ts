@@ -1,8 +1,13 @@
 import { z } from "zod";
 
+
+
 import { isDev } from "~/utils/isDev";
 
+
+
 import { Schema_Config } from "~/types/schema";
+
 
 const config: z.input<typeof Schema_Config> = {
   /**
@@ -10,6 +15,7 @@ const config: z.input<typeof Schema_Config> = {
    * Even if you're creating a PR, just let me change it myself
    */
   version: "2.0.3",
+
   /**
    * Base path of the app, used for generating links
    *
@@ -32,7 +38,7 @@ const config: z.input<typeof Schema_Config> = {
    *
    * @default false
    */
-  showDeployGuide: true,
+  showDeployGuide: false,
 
   /**
    * How long the cache will be stored in the browser
@@ -51,7 +57,7 @@ const config: z.input<typeof Schema_Config> = {
      * You need to create a new folder and share it with the service account
      * Then, copy the folder id and paste it here
      */
-    rootFolder: "b76c7c22083307a3aa99c28ab7cc69851d682f5a250d995679d4be5276cab16ab6c37f4d5b7ad1a9b93fb9bf768e752c",
+    rootFolder: "b5febdf5baaedeb832d1d666208296d34156e150da390dc0b405a61537ff56f9b0c04cc262d1b5bf3006ddfc96b029cd",
 
     /**
      * If your rootfolder inside a shared drive, you NEED to set this to true
@@ -67,12 +73,20 @@ const config: z.input<typeof Schema_Config> = {
      * Then you need to encrypt it using `/api/internal/encrypt?q=:shared_drive_id` route
      */
     isTeamDrive: true,
-    sharedDrive: "77bfa156c9c9d159112fcb0494ed8545bdaf7a3d567cd760ba2e2e2cd33fcbfc",
+    sharedDrive: "aeff7d8c4ed63754d76c03ad4de2eadefbea9a2ecfa60f2a3098c04e771b7190",
 
     defaultQuery: ["trashed = false", "(not mimeType contains 'google-apps' or mimeType contains 'folder')"],
     defaultField:
       "id, name, mimeType, thumbnailLink, fileExtension, modifiedTime, size, imageMediaMetadata, videoMediaMetadata, webContentLink, trashed",
     defaultOrder: "folder, name asc, modifiedTime desc",
+
+    /**
+     * Set how many items to display per page in the file list
+     * It's recommended to set this to a reasonable number
+     * Since it will affect the load time
+     *
+     * @default: 50 items per page | 5 search result
+     */
     itemsPerPage: 50,
     searchResult: 5,
 
@@ -87,39 +101,24 @@ const config: z.input<typeof Schema_Config> = {
      *
      * This will increase the server load, so use it wisely
      *
-     * Default: true
+     * @default: true
      */
     proxyThumbnail: true,
-
-    /**
-     * Only show preview for files that are smaller than this size
-     * If the file is larger than this size, it will show "can't preview" message instead
-     *
-     * Why?
-     * Since the stream endpoint are counted as a bandwidth usage
-     * I want to limit the preview to only small files
-     * It also to prevent abuse from the user
-     *
-     * You can also set this to 0 to disable the limit
-     *
-     * Default: 100MB
-     */
-    streamMaxSize: 100 * 1024 * 1024,
 
     /**
      * Special file name that will be used for certain purposes
      * These files will be ignored when searching for files
      * and will be hidden from the files list by default
+     *
+     * Banner will be used for opengraph image for folder
+     * By default, all folder will use default og image
      */
     specialFile: {
       password: ".password",
       readme: ".readme.md",
-      /**
-       * Banner will be used for opengraph image for folder
-       * By default, all folder will use default og image
-       */
       banner: ".banner",
     },
+
     /**
      * Reason why banner has multiple extensions:
      * - If I use contains query, it will also match the file or folder that contains the word.
@@ -135,9 +134,10 @@ const config: z.input<typeof Schema_Config> = {
      * If this set to false, download link will have temporary token attached to it
      * If this set to true, user can download the file without password as long as they have the link
      *
-     * Default: false
+     * @default: false
      */
-    allowDownloadProtectedFile: false,
+    allowDownloadProtectedFile: true,
+
     /**
      * Duration in hours.
      * In version 2, this will be used for download link expiration.
@@ -148,7 +148,7 @@ const config: z.input<typeof Schema_Config> = {
      * After 30 minutes, and the user still downloading the file, the download will NOT be interrupted
      * But if the user refresh the page / trying to download again, the download link will be expired
      *
-     * Default: 6 hours
+     * @default: 6 hours
      */
     temporaryTokenDuration: 6,
 
@@ -161,9 +161,24 @@ const config: z.input<typeof Schema_Config> = {
      * If you're using another platform, you can match the limit with your platform
      * Or you can set this to 0 to disable the limit
      *
-     * Default: 4MB
+     * @default: 4MB
      */
-    maxFileSize: 4 * 1024 * 1024,
+    maxFileSize: 4194304,
+
+    /**
+     * Only show preview for files that are smaller than this size
+     * If the file is larger than this size, it will show "can't preview" message instead
+     *
+     * Why?
+     * Since the stream endpoint are counted as a bandwidth usage
+     * I want to limit the preview to only small files
+     * It also to prevent abuse from the user
+     *
+     * You can also set this to 0 to disable the limit
+     *
+     * @default: 100MB
+     */
+    streamMaxSize: 104857600,
   },
 
   siteConfig: {
@@ -175,19 +190,30 @@ const config: z.input<typeof Schema_Config> = {
      *
      * You can set it to undefined if you don't want to use it
      */
-    siteName: "next-gdrive-index",
+    siteName: "dna-distribution",
     siteNameTemplate: "%s - %t",
-    siteDescription: "A simple file browser for Google Drive",
+    siteDescription: "A Google Drive Index built using Next.js",
+
+    /**
+     * Site Icon will be used on navbar
+     * Favicon will be used as website icon
+     */
     siteIcon: "/logo.svg",
-    siteAuthor: "mbaharip",
     favIcon: "/favicon.png",
+
+    /**
+     * Both are used on metadata
+     * Affects the value of footer
+     */
+    siteAuthor: "Digital Niche Development",
+    twitterHandle: "",
+
     /**
      * Next.js Metadata robots object
      *
      * ref: https://nextjs.org/docs/app/api-reference/functions/generate-metadata#robots
      */
     robots: "noindex, nofollow",
-    twitterHandle: "@mbaharip_",
 
     /**
      * Show file extension on the file name
@@ -196,7 +222,7 @@ const config: z.input<typeof Schema_Config> = {
      *    file.txt   |   file
      *    100KB      |   txt / 100KB
      *
-     * Default: false
+     * @default: false
      */
     showFileExtension: false,
 
@@ -253,25 +279,7 @@ const config: z.input<typeof Schema_Config> = {
      *  external?: boolean
      * }
      */
-    navbarItems: [
-      {
-        icon: "FileText",
-        name: "Documentation",
-        href: "https://github.com/mbahArip/next-gdrive-index/wiki",
-        external: true,
-      },
-      {
-        icon: "Github",
-        name: "Github",
-        href: "https://www.github.com/mbaharip",
-        external: true,
-      },
-      {
-        icon: "Mail",
-        name: "Contact",
-        href: "mailto:support@mbaharip.com",
-      },
-    ],
+    navbarItems: [],
 
     /**
      * Add support / donation links on the navbar
@@ -282,23 +290,7 @@ const config: z.input<typeof Schema_Config> = {
      *  href: string,
      * }
      */
-    supports: [
-      {
-        name: "Paypal",
-        currency: "USD",
-        href: "https://paypal.me/mbaharip",
-      },
-      {
-        name: "Ko-fi",
-        currency: "USD",
-        href: "https://ko-fi.com/mbaharip",
-      },
-      {
-        name: "Saweria",
-        currency: "IDR",
-        href: "https://saweria.co/mbaharip",
-      },
-    ],
+    supports: [],
   },
 };
 
