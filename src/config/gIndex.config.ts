@@ -1,13 +1,6 @@
 import { z } from "zod";
-
-
-
 import { isDev } from "~/utils/isDev";
-
-
-
 import { Schema_Config } from "~/types/schema";
-
 
 const config: z.input<typeof Schema_Config> = {
   /**
@@ -38,7 +31,7 @@ const config: z.input<typeof Schema_Config> = {
    *
    * @default false
    */
-  showDeployGuide: false,
+  showDeployGuide: true,
 
   /**
    * How long the cache will be stored in the browser
@@ -57,7 +50,7 @@ const config: z.input<typeof Schema_Config> = {
      * You need to create a new folder and share it with the service account
      * Then, copy the folder id and paste it here
      */
-    rootFolder: "b5febdf5baaedeb832d1d666208296d34156e150da390dc0b405a61537ff56f9b0c04cc262d1b5bf3006ddfc96b029cd",
+    rootFolder: "22a4739b1c3e68bcf5e6cd6d4e165568d02bf7b9b25475efe837041dc6ea4b3d792b3ec2e55f0ef08621e4aa2cad607c",
 
     /**
      * If your rootfolder inside a shared drive, you NEED to set this to true
@@ -73,9 +66,12 @@ const config: z.input<typeof Schema_Config> = {
      * Then you need to encrypt it using `/api/internal/encrypt?q=:shared_drive_id` route
      */
     isTeamDrive: true,
-    sharedDrive: "aeff7d8c4ed63754d76c03ad4de2eadefbea9a2ecfa60f2a3098c04e771b7190",
+    sharedDrive: "31b9843845ce1ffc9dc3a0206b3d5e6f2e2e8a0db23f1ec0e7cf8238956eaa36",
 
-    defaultQuery: ["trashed = false", "(not mimeType contains 'google-apps' or mimeType contains 'folder')"],
+    defaultQuery: [
+      "trashed = false",
+      "(not mimeType contains 'google-apps' or mimeType contains 'folder')",
+    ],
     defaultField:
       "id, name, mimeType, thumbnailLink, fileExtension, modifiedTime, size, imageMediaMetadata, videoMediaMetadata, webContentLink, trashed",
     defaultOrder: "folder, name asc, modifiedTime desc",
@@ -84,9 +80,9 @@ const config: z.input<typeof Schema_Config> = {
      * Set how many items to display per page in the file list
      * It's recommended to set this to a reasonable number
      * Since it will affect the load time
-     *
+     * 
      * @default: 50 items per page | 5 search result
-     */
+    */
     itemsPerPage: 50,
     searchResult: 5,
 
@@ -103,13 +99,13 @@ const config: z.input<typeof Schema_Config> = {
      *
      * @default: true
      */
-    proxyThumbnail: false,
+    proxyThumbnail: true,
 
     /**
      * Special file name that will be used for certain purposes
      * These files will be ignored when searching for files
      * and will be hidden from the files list by default
-     *
+     * 
      * Banner will be used for opengraph image for folder
      * By default, all folder will use default og image
      */
@@ -127,7 +123,14 @@ const config: z.input<typeof Schema_Config> = {
      *
      * You can add more extensions if you want
      */
-    hiddenFiles: [".password", ".readme.md", ".banner", ".banner.jpg", ".banner.png", ".banner.webp"],
+    hiddenFiles: [
+      ".password",
+      ".readme.md",
+      ".banner",
+      ".banner.jpg",
+      ".banner.png",
+      ".banner.webp",
+    ],
 
     /**
      * Allow user to download protected file without password.
@@ -163,7 +166,7 @@ const config: z.input<typeof Schema_Config> = {
      *
      * @default: 4MB
      */
-    maxFileSize: 4194304,
+    maxFileSize: 10485760,
 
     /**
      * Only show preview for files that are smaller than this size
@@ -178,7 +181,7 @@ const config: z.input<typeof Schema_Config> = {
      *
      * @default: 100MB
      */
-    streamMaxSize: 104857600,
+    streamMaxSize: 1048576000,
   },
 
   siteConfig: {
@@ -190,21 +193,21 @@ const config: z.input<typeof Schema_Config> = {
      *
      * You can set it to undefined if you don't want to use it
      */
-    siteName: "dna-distribution",
+    siteName: "DNA Distribution Portal",
     siteNameTemplate: "%s - %t",
-    siteDescription: "A Google Drive Index built using Next.js",
+    siteDescription: "Client Images & Files",
 
     /**
      * Site Icon will be used on navbar
      * Favicon will be used as website icon
-     */
+    */
     siteIcon: "/logo.svg",
     favIcon: "/favicon.png",
 
     /**
      * Both are used on metadata
      * Affects the value of footer
-     */
+    */
     siteAuthor: "Digital Niche Development",
     twitterHandle: "",
 
@@ -224,7 +227,7 @@ const config: z.input<typeof Schema_Config> = {
      *
      * @default: false
      */
-    showFileExtension: false,
+    showFileExtension: true,
 
     /**
      * Footer content
@@ -242,7 +245,10 @@ const config: z.input<typeof Schema_Config> = {
      * - {{ handle }} will be replaced with the twitter handle from twitterHandle config above
      * - {{ creator }} will be replaced with mbaharip if you want to credit me
      */
-    footer: ["{{ siteName }} *v{{ version }}* @ {{ repository }}", "{{ year }} - Made with ❤️ by **{{ author }}**"],
+    footer: [
+      "{{ siteName }} *v{{ version }}* @ {{ repository }}",
+      "{{ year }} - Made with ❤️ by **{{ author }}**",
+    ],
 
     /**
      * Site wide password protection
