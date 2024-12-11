@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { isDev } from "~/utils/isDev";
+
 import { Schema_Config } from "~/types/schema";
 
 const config: z.input<typeof Schema_Config> = {
@@ -7,7 +9,7 @@ const config: z.input<typeof Schema_Config> = {
    * If possible, please don't change this value
    * Even if you're creating a PR, just let me change it myself
    */
-  version: "2.0.3",
+  version: "1.0.4",
 
   /**
    * Base path of the app, used for generating links
@@ -31,7 +33,7 @@ const config: z.input<typeof Schema_Config> = {
    *
    * @default false
    */
-  showDeployGuide: true,
+  showDeployGuide: false,
 
   /**
    * How long the cache will be stored in the browser
@@ -50,8 +52,7 @@ const config: z.input<typeof Schema_Config> = {
      * You need to create a new folder and share it with the service account
      * Then, copy the folder id and paste it here
      */
-    rootFolder: "22a4739b1c3e68bcf5e6cd6d4e165568d02bf7b9b25475efe837041dc6ea4b3d792b3ec2e55f0ef08621e4aa2cad607c",
-
+    rootFolder: "eb95c32ad0c280fa5db60c58b327e0ab12c5f8b448a2e1a3454cf5546cb3daebb3717390b8d39cdfe3cbb7480ead4336",
     /**
      * If your rootfolder inside a shared drive, you NEED to set this to true
      * If not, you can set this to false
@@ -65,13 +66,10 @@ const config: z.input<typeof Schema_Config> = {
      *
      * Then you need to encrypt it using `/api/internal/encrypt?q=:shared_drive_id` route
      */
-    isTeamDrive: true,
-    sharedDrive: "31b9843845ce1ffc9dc3a0206b3d5e6f2e2e8a0db23f1ec0e7cf8238956eaa36",
+  isTeamDrive: true,
+    sharedDrive: "c40a3ef9a990e355ab115fa5601508156635536c5cbbca0285c187928e3c46e0",
 
-    defaultQuery: [
-      "trashed = false",
-      "(not mimeType contains 'google-apps' or mimeType contains 'folder')",
-    ],
+    defaultQuery: ["trashed = false", "(not mimeType contains 'google-apps' or mimeType contains 'folder')"],
     defaultField:
       "id, name, mimeType, thumbnailLink, fileExtension, modifiedTime, size, imageMediaMetadata, videoMediaMetadata, webContentLink, trashed",
     defaultOrder: "folder, name asc, modifiedTime desc",
@@ -80,9 +78,9 @@ const config: z.input<typeof Schema_Config> = {
      * Set how many items to display per page in the file list
      * It's recommended to set this to a reasonable number
      * Since it will affect the load time
-     * 
+     *
      * @default: 50 items per page | 5 search result
-    */
+     */
     itemsPerPage: 50,
     searchResult: 5,
 
@@ -105,7 +103,7 @@ const config: z.input<typeof Schema_Config> = {
      * Special file name that will be used for certain purposes
      * These files will be ignored when searching for files
      * and will be hidden from the files list by default
-     * 
+     *
      * Banner will be used for opengraph image for folder
      * By default, all folder will use default og image
      */
@@ -123,14 +121,7 @@ const config: z.input<typeof Schema_Config> = {
      *
      * You can add more extensions if you want
      */
-    hiddenFiles: [
-      ".password",
-      ".readme.md",
-      ".banner",
-      ".banner.jpg",
-      ".banner.png",
-      ".banner.webp",
-    ],
+    hiddenFiles: [".password", ".readme.md", ".banner", ".banner.jpg", ".banner.png", ".banner.webp"],
 
     /**
      * Allow user to download protected file without password.
@@ -153,7 +144,7 @@ const config: z.input<typeof Schema_Config> = {
      *
      * @default: 6 hours
      */
-    temporaryTokenDuration: 6,
+    temporaryTokenDuration: 59,
 
     /**
      * Maximum file size that can be downloaded via api routes
@@ -166,7 +157,7 @@ const config: z.input<typeof Schema_Config> = {
      *
      * @default: 4MB
      */
-    maxFileSize: 10485760,
+    maxFileSize: 419430400,
 
     /**
      * Only show preview for files that are smaller than this size
@@ -195,19 +186,19 @@ const config: z.input<typeof Schema_Config> = {
      */
     siteName: "DNA Distribution Portal",
     siteNameTemplate: "%s - %t",
-    siteDescription: "Client Images & Files",
+    siteDescription: "Client Files, Images & Resources",
 
     /**
      * Site Icon will be used on navbar
      * Favicon will be used as website icon
-    */
+     */
     siteIcon: "/logo.svg",
     favIcon: "/favicon.png",
 
     /**
      * Both are used on metadata
      * Affects the value of footer
-    */
+     */
     siteAuthor: "Digital Niche Development",
     twitterHandle: "",
 
@@ -245,10 +236,7 @@ const config: z.input<typeof Schema_Config> = {
      * - {{ handle }} will be replaced with the twitter handle from twitterHandle config above
      * - {{ creator }} will be replaced with mbaharip if you want to credit me
      */
-    footer: [
-      "{{ siteName }} *v{{ version }}* @ {{ repository }}",
-      "{{ year }} - Made with ❤️ by **{{ author }}**",
-    ],
+    footer: ["{{ siteName }} *v{{ version }}* @ {{ repository }}", "{{ year }} - **{{ author }}**"],
 
     /**
      * Site wide password protection
